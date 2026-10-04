@@ -721,20 +721,26 @@ const FONT = {
   O:[".##.","#..#","#..#","#..#",".##."], P:["###.","#..#","###.","#...","#..."],
   Q:[".##.","#..#","#..#","#.##",".###"], R:["###.","#..#","###.","#.#.","#..#"],
   S:[".###","#...",".##.","...#","###."], T:["###",".#.",".#.",".#.",".#."],
-  U:["#..#","#..#","#..#","#..#",".##."], V:["#..#","#..#","#..#",".##.",".##."]
+  U:["#..#","#..#","#..#","#..#",".##."], V:["#..#","#..#","#..#",".##.",".##."],
+  B:["###.","#..#","###.","#..#","###."], F:["####","#...","###.","#...","#..."],
+  G:[".###","#...","#.##","#..#",".###"], K:["#..#","#.#.","##..","#.#.","#..#"],
+  W:["#...#","#...#","#.#.#","##.##","#...#"], X:["#..#","#..#",".##.","#..#","#..#"],
+  Y:["#.#","#.#",".#.",".#.",".#."], Z:["####","..#.",".#..","#...","####"]
 };
+// Quita tildes y pasa a mayúsculas; cualquier carácter sin dibujo se trata como espacio
+const fontText = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
 function textWidth(str, sc) {
   let w = 0;
-  for (const ch of str) w += (ch === ' ' ? 3 : FONT[ch][0].length) * sc + sc;
+  for (const ch of fontText(str)) w += (FONT[ch] ? FONT[ch][0].length : 3) * sc + sc;
   return w - sc;
 }
 function drawText(g, str, cx, y, sc, col, shadow) {
   const passes = shadow ? [[shadow, sc], [col, 0]] : [[col, 0]];
   for (const [c, off] of passes) {
     let x = Math.round(cx - textWidth(str, sc) / 2);
-    for (const ch of str) {
-      if (ch === ' ') { x += 4 * sc; continue; }
+    for (const ch of fontText(str)) {
       const gl = FONT[ch];
+      if (!gl) { x += 4 * sc; continue; }
       for (let r = 0; r < 5; r++) for (let i = 0; i < gl[r].length; i++)
         if (gl[r][i] === '#') rect(g, x + i * sc, y + r * sc + off, sc, sc, c);
       x += gl[0].length * sc + sc;
@@ -771,7 +777,8 @@ const coverCv = makeCanvas(BOOK_W, BOOK_H, g => {
   rect(g, cx - 1, 56, 2, 2, '#fff1b8');
   rect(g, 22, 75, 42, 1, GOLD);
   for (let x = 24; x < 62; x += 6) rect(g, x, 74, 3, 1, GOLD_D);
-  drawText(g, 'MIGUEL DE CERVANTES', cx, 82, 1, GOLD, INK);
+  drawText(g, 'MIGUEL DE', cx, 78, 1, GOLD, INK);
+  drawText(g, 'CERVANTES', cx, 84, 1, GOLD, INK);
 });
 const insideCv = makeCanvas(BOOK_W, BOOK_H, g => {
   rect(g, 0, 0, BOOK_W, BOOK_H, '#e6d4a8');
