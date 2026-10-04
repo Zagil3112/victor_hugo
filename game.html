@@ -409,19 +409,26 @@ let gmOpen = false;
 const VOICE_SRC = 'data:audio/wav;base64,UklGRsgPAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAATElTVBoAAABJTkZPSVNGVA4AAABMYXZmNjAuMTYuMTAwAGRhdGGCDwAAAAD///7//v/+//7//f/9//3//P/8//r/+P/1//L/7//s/+j/5v/j/+P/5P/k/+T/4v/g/+H/5v/v//3/CwAYACUAMAA9AE4AXwByAIIAjwCcAKUArgC1ALkAuACxAKoAnwCQAH4AawBUAD0AJAAKAOz/zf+p/4T/Yf9F/yv/Gf8G//L+3v7O/sX+xP7I/tX+4v7w/gf/Hv83/1n/eP+X/7P/2f8AAC0AWwCKALUA4QAJASwBRQFZAWgBbAFwAXQBeAF7AXQBawFdAUgBMwEdAfoA1wCmAGcALQDs/7f/gf9Y/y3/EP/5/un+2P7I/r7+tP6q/qf+pP6a/pf+jP6C/nf+fP6I/p3+wv7q/hL/Qf9x/6H/yP/o/wAAEAAgACAAKAA4AEcAXwB3AIcAjwCXAJ8ApwCnAKcApwCfAI8AfwBnAFcARwBAAEAAOAAwACgAMABAAE8AXwB3AI8ApwCvALcAzwD2ACYBVgFtAXUBbQFlAU4BNgEWAe4AxwCXAE8AAADI/7H/qf+J/1H/Iv8C/9r+qv57/mv+a/5r/mv+W/5T/mP+k/7K/gr/Sf+J/9D/IABnAK8A/gBOAZUBxQHsAQQC/AG1AV4BFgH+AO4AxwCfAHcAXwA4AAAAsf9R/+r+i/4j/rz9Pf3O/Hb8L/zg+5j7gPug+/f7hvxF/Sv+Gv/w/8cAnQF0AiIDigPJA+ED6QPpAwEESASnBO8ELwV2Bd0FVAasBtQGzAaUBjUGjgWYBEoDvQEYAGv+nvzC+g35z/cY96n2Svbq9ZP1RPXs9I30RfQm9B70JvQu9E30jfT09IP1avbP98v5T/wK/70BUATjBmcJgwvwDNcNfg4MD2QPbA9kD4QP2w8jEDIQGxADEPMP2w+MD+UO5w15DKUKSQhGBc0BQ/7x+r/3nfTK8b7vmO7x7Urts+x87JTshOwk7K3rdutm61brPutW66XrFOzT7FDuxPAe9Cb4tvx1AfUF9gmPDeEQzBMQFq0X0xiBGaEZahl5GUAadhtUHJwchBw8HKUbvxrBGdsYnRdhFdcRKA2iB50BiPu79U3wHus/5ifiNN933ZncWdyJ3MjcyNxx3CrcUdzY3H/dFt6V3gzfo9/p4JzjQ+jP7qn2Kv+6B9MPFhdyHfAiWCdbKsArsCvCKoQpdijfJ88nNijFKE0ppCnbKesppCmmKJkm8CIzHTkVkwtOAVD3OO4v5lzf3tnF1SLT1NGl0SzSw9Lq0mvSXdHwz1vOBc1HzDfMvszMzZjPi9Ir18fdd+b78Jb8QQgNE3QcViSaKlIvmzLANP01nDbkNkM38jfgOOY53Dq7O2o8uTx5PIs7rzmUNq0xiioUIZEVqAhB+0juluKA2D/Q68lrxYjC28Dlv06/x74ovmK9m7wMvM271bs0vAK9eL7TwG3Ew8lV0Uvbfedb9QkEhhIFIPArBTYmPkNEdEjvSh1MXEwtTN1LrkumS65LnkteS8dKqUnVRxJFIUGDO7kzdCmsHOcNDP447mTfRNIwx1C+pLcVs1Kw5K5drkWuVa5Nrg6ul634rFmsEax5rNatWrBqtH+6H8O6zjDd4e2p/1ARyiFQMJE8b0byTVhTAVdVWbpamVsoXJ9cJl29XUReY17cXW9c9FlqVotR50rYQeU12SYZFZ0Bye302jrKPLwosc+o4qIBn9WcF5xenEydap5xnx+gd6CeoN6gpKFpo4SmW6tWsvS7xcjv2CTsPgGPFlMqRDvDSOhSM1oqX1RiEWTYZA9l/2TIZHhkGWTCY2pj42KtYUJfOVtMVUtN7kLGNXslVhJN/QzoSNRHw7i1mquXpCeg053tnNWcBZ1EnXydxJ0LnjOeQ55ynkGfNaG3pO2pCLFvuqnGDdZ76Pb85xGbJcw2wkRPT7lWaVv8XRpfgV/BXzBgv2BGYaZhzWHVYcVhbmGIYJteUVs6VthOi0TkNrslsBH3+2fmo9LxwdG0K6tnpOifHZ14m3Kaq5ndmCaYx5ful82YOponnJqe3KFkpqCsIbVUwJLO+98G9I8J6B5kMr5Cd0+uWPJew2KYZMhkomOOYbteSVtBV+FSYU4hSjhGd0J2PtY5WDTULUImch1sE4AIZf0I81DqvONE33HczNre2WfZL9kn2U/Zrtlt2ovb8Nxd3qPfweDn4T3j2uSu5ovoYOo87DHuXfCg8tz04fad+AP6Cfuo+9j7mPsJ+0r6ZPle+CD3w/Vt9FfzuPKZ8ujyZ/P28430HPWz9VL24fZY96/39/dO+L34VPkD+rr6ePs//A397P26/oH/QAAeATQCigP3BD0GKwe6BwkIOQh5CMAIAAknCTcJJwkACbAIMQiCB7QG1QX3BBEEGgMUAhYBIABR/6L+BP5t/eb8fvxH/Ef8dvy+/BX9df3U/TP+k/4C/3n/AACPABYBfQG9AewBFAJcArsCMgOhA/EDIAQ4BDAEGQThA5kDSgP7AsMCswK7AssC2wLTAsMCowJ7AkwCFALNAZUBbQFOATYBFgH2AOYA7gAeAWUBrQHlAQwCHAIUAvQBvQF1ASYB7gDWAN4A7gD2AO4A1gCvAIcARwAIAMD/kf9x/2n/Yf9R/zH/Ev8S/zH/cf+p/9j/8P8AAAgAGAAgABgA+P/Q/7H/qf+p/7n/wP/Y/wAATwC3AC4BnQHsARwCPAJMAkwCNAL0AaUBVgEuAS4BRgFtAY0BnQGlAb0BzQHdAd0BvQGNAU4BBgGnADgAuf9B/9r+m/5z/lv+Q/47/kP+Y/6T/sL++v4i/zn/Qf85/yr/Gv8S/wr/Ev8S/yL/Sf+Z/ygA1gCdAVQC8wJqA7ED4QPpA9kDuQOhA4oDcgNSAxoD2wKTAlQCDAK9AXUBNgEWAR4BNgE2AQYBnwAIAFH/qv4U/qT9Zf1V/V39Zf1N/f78lvw3/Af8D/xf/O78pP2L/nn/ZwAWAX0BjQFWAQYBxwCnAK8A5gA2AZUB3QEMAhwCFAIEAgwCJAJUAnsCiwJ7AkQC5QFtAeYAXwDo/5n/ef+J/7H/8P8oAFcAZwBfAEcAMAAgACAAMABAAE8ATwBAACgAEAAAABAAMABfAJ8A3gAOAS4BPgE2ASYB/gDeAL8ApwCfAI8AfwBvAF8ARwAoAAAAyP+B/yr/2v6b/nP+a/6D/sL+Kv+Z/xAAdwDHAPYABgH+AN4AtwCHAGcATwBPAE8AVwBXAE8AQAAwACgAKAAwACgAEADg/5H/Mf/K/mv+FP7U/Zz9ff1l/WX9df2U/dT9G/5z/tL+Kv95/8D/AAAoAEcAVwBfAF8AZwB/AKcA1gAOAUYBdQGdAb0B1QH0ARQCNAJMAlwCVAI0AgwC1QGdAWUBNgEGAeYA3gDmAP4AHgE2AUYBPgEuAQYB1gCPAEcA+P+x/3H/Of8S//L+4v7a/sr+qv57/jv+/P3E/Zz9hf2F/ZT9rP3U/fz9K/5b/ov+qv7K/uL++v4q/2H/sf/4/0AAdwCfAMcA9gA2AZUB/AF0AtsCMgNqA4IDegNaAzID+wLDAnsCPAIEAs0BnQFeARYBtwBPAPD/mf9Z/yr/Av/i/rL+Y/70/XX9/vym/H78fvyu/Ob8Nf2F/dz9M/6D/rr+6v4S/0H/cf+x//D/MABfAH8AhwB3AFcAMAAQAAgAGAAoADAAKAAgABAACAAQABgAKAA4AEAARwBHAEAAOAAwACgAKAAoACgAMABAAGcAlwDHAPYADgEeAR4BFgEOAf4A7gDWALcAhwBHAAgA0P+Z/3n/Yf9J/zn/Kv8a/xL/Cv8K/wr/Ev8a/yL/Mf9B/1H/af+J/7H/2P8AACgARwB/AL8ABgFOAYUBpQGtAZ0BhQFeAT4BDgHeAKcAbwAwAPj/wP+R/2H/Mf8K/+L+uv6T/mv+Q/4r/hT+BP70/eT91P3M/dT97P0U/kP+c/6i/tr+Iv9x/7n/CABHAIcAtwDWAO4ABgEeAS4BPgFOAU4BTgFGAT4BPgE+ATYBLgEWAf4A1gC3AJcAbwBPADAACADg/8D/of+J/4H/gf+J/5n/qf/A/9D/4P/o/+j/6P/Y/8j/uf+p/6n/qf+5/8j/4P/w//j/CAAIABAAEAAQABgAGAAgACgAOABAAEAAQAA4ADAAIAAYABAAEAAQABAAEAAQAAgAAADw/+H/0f/C/7r/sv+z/7P/s/+z/7v/u//D/8v/2v/p/wAAHgA8AFoAeACOAKQAswDIANcA5QDsAPMA8gDxAPEA8ADwAOgA4ADRALQAlwBrAEAAFQDk/7L/gf9X/zT/Ev/2/un+3P7d/tf+1/7Y/uD+5/7v/gT/Gf8u/1D/c/+V/8T/8/8oAF0AiwCyANoAAAEnAU0BbQGGAZIBlwGJAXUBWgFAASwBGAEKAfcA6QDWALwAowCJAGoARAAlAAAA2/+3/5L/dP9c/z7/J/8P/wT/+f4A/wb/Gf8r/z7/UP9W/13/Xf9j/2r/cP98/4L/iP+O/5r/q/+8/9n/7/8LACEAMgBCAFMAYwBzAH4AgwCCAIIAgQB7AHsAgACFAI8AlACZAJ0AnQCcAJYAjAB8AGcATQAzABQAAADs/93/0//E/7X/ov+T/4X/d/9u/2T/W/9N/0D/Mv8k/xz/GP8Z/yP/Lf88/0//Y/96/5b/sv/O/+X/+/8OAB8ALQA+AFQAZQB7AJAAoQCyAMMAzwDbAOIA5gDgANcAzgDAALMApgCdAJAAgwB2AGUAVQBEADgAKAAcABAABAD0/+n/2f/O/8P/t/+w/6n/pv+m/6f/p/+r/6//s/+3/7v/vP+8/8D/wP/E/8v/z//T/9f/2v/h/+X/7P/2//3/AwAKABAAFAAXAB0AIAAmACkAMAA2ADgAPgBBAEcASQBPAFIAVwBaAFwAXABeAFoAWgBWAFAASgBEAD4AOAA1AC8AKQAhABgADQADAPj/7v/h/9T/x/+9/7H/pf+Z/5D/h/+B/33/ef93/3b/ev99/4D/iP+Q/5r/pP+w/7v/yf/X/+T/8/8CABEAHwAuADkARwBRAFoAYQBmAGkAaABnAGQAXgBZAFEASQA/ADIAJQAYAAwA/v/y/+X/2v/P/8T/uf+v/6j/o/+e/5v/mf+Z/5r/nv+i/6f/rv+2/7//x//R/9z/5v/x//z/BgAOABcAHgAmAC0AMwA4ADsAPQA+AD0APQA7ADkANwA0ADAAKwAmACIAHQAYABMADgAJAAQA///8//j/9f/z//D/7v/s/+z/6//s/+3/7v/w//H/8v/0//b/+f/7//7/AAABAAIAAwAEAAUABgAHAAcABwAGAAYABQAFAAQABAADAAIAAQABAA==';
 const VOICE_PITCH = { 'Melimon': 1.12, 'Don Quijote': 0.78, 'Sancho': 0.92, 'Gato': 1.45 };
 const VOICE_VOLUME = 0.35;
+// Volumen general de efectos y voces: en móvil suenan más bajo, así que se amplifican más
+const SFX_GAIN = isTouch ? 3 : 1.8;
 const voice = { ctx: null, buf: null, gain: null, pool: [], i: 0 };
 function initVoice() {
   // Respaldo con elementos <audio> por si Web Audio no está disponible
   voice.pool = Array.from({ length: 4 }, () => {
-    const a = new Audio(VOICE_SRC); a.volume = VOICE_VOLUME; a.preservesPitch = false; a.webkitPreservesPitch = false; a.mozPreservesPitch = false;
+    const a = new Audio(VOICE_SRC); a.volume = Math.min(1, VOICE_VOLUME * SFX_GAIN); a.preservesPitch = false; a.webkitPreservesPitch = false; a.mozPreservesPitch = false;
     return a;
   });
   try {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
+    // En iPhone permite que los efectos suenen aunque el teléfono esté en silencio
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
     voice.ctx = new AC();
     if (voice.ctx.state === 'suspended') voice.ctx.resume();
-    voice.gain = voice.ctx.createGain(); voice.gain.gain.value = VOICE_VOLUME; voice.gain.connect(voice.ctx.destination);
+    const comp = voice.ctx.createDynamicsCompressor();
+    comp.connect(voice.ctx.destination);
+    voice.master = voice.ctx.createGain(); voice.master.gain.value = SFX_GAIN; voice.master.connect(comp);
+    voice.gain = voice.ctx.createGain(); voice.gain.gain.value = VOICE_VOLUME; voice.gain.connect(voice.master);
     const bin = atob(VOICE_SRC.split(',')[1]), bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
     voice.ctx.decodeAudioData(bytes.buffer, buf => { voice.buf = buf; }, () => {});
@@ -458,7 +465,7 @@ function sfx(name) {
     gn.gain.setValueAtTime(0.0001, t0 + start);
     gn.gain.linearRampToValueAtTime(vol, t0 + start + attack);
     gn.gain.exponentialRampToValueAtTime(0.0001, t0 + start + dur);
-    src.connect(bp); bp.connect(gn); gn.connect(c.destination);
+    src.connect(bp); bp.connect(gn); gn.connect(voice.master);
     src.start(t0 + start, Math.random() * 0.3); src.stop(t0 + start + dur + 0.05);
   };
   const tone = (start, dur, freq, type, vol) => {
@@ -467,7 +474,7 @@ function sfx(name) {
     gn.gain.setValueAtTime(0.0001, t0 + start);
     gn.gain.linearRampToValueAtTime(vol, t0 + start + 0.01);
     gn.gain.exponentialRampToValueAtTime(0.0001, t0 + start + dur);
-    o.connect(gn); gn.connect(c.destination); o.start(t0 + start); o.stop(t0 + start + dur + 0.05);
+    o.connect(gn); gn.connect(voice.master); o.start(t0 + start); o.stop(t0 + start + dur + 0.05);
   };
   if (name === 'step-wood') noise(0, 0.07, 1100, 700, 1.2, 0.16, 0.004);
   else if (name === 'step-dirt') noise(0, 0.09, 600, 350, 0.9, 0.14, 0.006);
