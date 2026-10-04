@@ -82,10 +82,12 @@
   #gramMenu .lyrics p { margin: 0; }
   #gramMenu .lyrics p:first-child { margin-top: calc(var(--s) * 4px); }
   #gramMenu .lyrics p:last-child { margin-bottom: calc(var(--s) * 6px); }
-  #gramMenu .memory { margin: calc(var(--s) * 6px) auto calc(var(--s) * 8px); width: 82%; }
+  #gramMenu .memory { margin: calc(var(--s) * 6px) auto calc(var(--s) * 4px); width: 82%; }
   #gramMenu .memory .orn { color: #7a5a30; font-size: calc(var(--s) * 6px); margin-bottom: calc(var(--s) * 3px); }
   #gramMenu .memory img { display: block; width: 100%; height: auto; box-sizing: border-box; background: #fbf5e6; padding: calc(var(--s) * 2px) calc(var(--s) * 2px) calc(var(--s) * 2px); border: calc(var(--s) * 0.5px) solid #a8863a; box-shadow: 0 calc(var(--s) * 1px) calc(var(--s) * 3px) rgba(60, 30, 10, 0.45); transform: rotate(-1.5deg); }
   #gramMenu .memory figcaption { margin-top: calc(var(--s) * 3px); font-style: italic; font-size: calc(var(--s) * 7px); color: #5a2a1a; }
+  #gramMenu .lyrics p.dedication { margin: calc(var(--s) * 4px) 0 calc(var(--s) * 10px); font-size: calc(var(--s) * 9px); font-style: italic; color: #8e1424; }
+  #gramMenu .lyrics p.dedication span { display: block; font-size: calc(var(--s) * 7px); font-style: normal; margin-top: calc(var(--s) * 1px); }
   #gramMenu .lyrics p.gap { height: calc(var(--s) * 5px); }
   #gramMenu .lyrics p.hint { font-style: italic; color: #7a5a30; margin-top: calc(var(--s) * 10px); }
   #gramMenu .foot { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: calc(var(--s) * 2px); }
@@ -1160,8 +1162,12 @@ const gm = {
   });
   const fig = document.createElement('figure');
   fig.className = 'memory';
-  fig.innerHTML = '<div class="orn">~ ❦ ~</div><img src="' + PHOTO_SRC + '" alt="Meli y Sebas frente a las murallas de un castillo medieval"><figcaption>Meli y Sebas medievales, felices 5 meses amor</figcaption>';
+  fig.innerHTML = '<div class="orn">~ ❦ ~</div><img src="' + PHOTO_SRC + '" alt="Meli y Sebas frente a las murallas de un castillo medieval"><figcaption>Meli y Sebas medievales</figcaption>';
   gm.lyrics.appendChild(fig);
+  const ded = document.createElement('p');
+  ded.className = 'dedication';
+  ded.innerHTML = 'Felices 5 meses amor<span>♥</span>';
+  gm.lyrics.appendChild(ded);
 })();
 const fmt = s => isFinite(s) ? Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0') : '0:00';
 function gmRefresh() {
@@ -1209,7 +1215,7 @@ const manchaScene = {
     for (let i = 0; i < 6; i++) setTimeout(() => addParticle('star', player.x + 4 + (i * 5) % 18, player.y + 6 + (i * 7) % 20), i * 120);
     setTimeout(() => say([
       { who: 'Melimon', text: '¿Dónde... estoy?' },
-      { who: 'Melimon', text: 'Esos molinos... ¿Estoy dentro del libro? Ojala tengan salchipapas por aquí' }
+      { who: 'Melimon', text: 'Esos molinos... ¿Estoy dentro del libro? Ojala tengan salchipapas por aquí.' }
     ], () => { this.state = 'meet'; }), 1200);
   },
   talk() {
