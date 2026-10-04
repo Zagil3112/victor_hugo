@@ -473,6 +473,11 @@ function sfx(name) {
     noise(0, 0.32, 1400, 4200, 0.8, 0.22, 0.06);
     noise(0.22, 0.28, 2400, 1200, 0.9, 0.16, 0.04);
     tone(0.46, 0.18, 110, 'sine', 0.18);
+  } else if (name === 'needle') {
+    tone(0, 0.16, 140, 'sine', 0.42);
+    noise(0, 0.035, 2600, 2600, 1.5, 0.32, 0.002);
+    noise(0.32, 0.045, 3200, 2800, 2, 0.26, 0.002);
+    for (let i = 0; i < 18; i++) noise(0.4 + i * 0.07 + Math.random() * 0.05, 0.025, 4200, 4200, 3, 0.15 * (1 - i / 18), 0.001);
   } else if (name === 'pickup') {
     [784, 988, 1175, 1568].forEach((f, i) => { tone(i * 0.08, 0.28, f, 'triangle', 0.13); tone(i * 0.08, 0.12, f * 2, 'square', 0.02); });
     tone(0.34, 0.5, 2093, 'triangle', 0.06);
@@ -646,7 +651,7 @@ let hintTimer = 0, hintGone = false;
 const spots = [
   { label: 'Acariciar', min: 0, max: 104, act() {
       for (let i = 0; i < 3; i++) setTimeout(() => addParticle('heart', CAT_X + 4 + i * 4, CAT_Y - 4), i * 250);
-      say([{ who: 'Melimon', text: '¿Quién es el gatito más precioso del mundo?' }, { who: 'Gato', text: 'Mrrrau~' }]);
+      say([{ who: 'Melimon', text: 'Gordelio no era naranja ¿Alguien me está haciendo brujería?' }, { who: 'Gato', text: 'Mrrrau~' }]);
   } },
   { label: 'Leer', min: 236, max: 400, act() {
       say([
@@ -766,7 +771,7 @@ const coverCv = makeCanvas(BOOK_W, BOOK_H, g => {
   rect(g, cx - 1, 56, 2, 2, '#fff1b8');
   rect(g, 22, 75, 42, 1, GOLD);
   for (let x = 24; x < 62; x += 6) rect(g, x, 74, 3, 1, GOLD_D);
-  drawText(g, 'CERVANTES', cx, 82, 1, GOLD, INK);
+  drawText(g, 'MIGUEL DE CERVANTES', cx, 82, 1, GOLD, INK);
 });
 const insideCv = makeCanvas(BOOK_W, BOOK_H, g => {
   rect(g, 0, 0, BOOK_W, BOOK_H, '#e6d4a8');
@@ -873,7 +878,7 @@ const deskScene = {
   state: 'intro', p: 0, glow: 0,
   enter() {
     this.state = 'intro'; this.p = 0; this.glow = 0;
-    setTimeout(() => say([{ who: 'Melimon', text: 'Qué portada tan bonita... Bueno, solo un capítulo.' }], () => { this.state = 'ready'; }, 'bottom'), 700);
+    setTimeout(() => say([{ who: 'Melimon', text: 'Qué portada tan bonita, aunque mi edición es mejor. Bueno, solo un capítulo.' }], () => { this.state = 'ready'; }, 'bottom'), 700);
   },
   update(k) {
     if (this.state === 'flash') {
@@ -1005,64 +1010,52 @@ const ROCINANTE = (function buildHorse() {
 })();
 
 // Gramófono (16 x 21)
-// Gramófono (32 x 38) con trompeta de pétalos, caja en perspectiva y manivela, dibujado por código
-const GR_PAL = { K:'#3a2614', Y:'#fbefb4', G:'#ecd27e', g:'#d2b25a', d:'#b8943e', i:'#8e6e2a', j:'#6a4e1e', W:'#cf9f62', w:'#ad7d46', v:'#835c32', o:'#bf8f52', p:'#4a4252', q:'#6a6274', s:'#d0d6dc', k:'#1a1420' };
+// Gramófono (30 x 36): caja de madera rojiza con emblema dorado y trompeta en forma de campana, dibujado por código
+const GR_PAL = { K:'#3a2614', Y:'#fbefb4', G:'#ecd27e', g:'#d2b25a', d:'#b8943e', i:'#7a5a24', j:'#4e3614', W:'#cf9f62', w:'#ad7d46', v:'#835c32', o:'#bf8f52', R:'#8e3e26', r:'#6a2a18', p:'#4a4252', q:'#6a6274', s:'#d0d6dc', S:'#9aa0a8', k:'#1a1420' };
 function buildGramophone() {
-  const w = 32, h = 40, g = Array.from({ length: h }, () => Array(w).fill('.'));
-  const set = (x, y, c) => { x = Math.round(x); y = Math.round(y) + 3; if (x >= 0 && x < w && y >= 0 && y < h) g[y][x] = c; };
+  const w = 30, h = 36, g = Array.from({ length: h }, () => Array(w).fill('.'));
+  const set = (x, y, c) => { x = Math.round(x); y = Math.round(y); if (x >= 0 && x < w && y >= 0 && y < h) g[y][x] = c; };
   const get = (x, y) => (g[y] && g[y][x]) || '.';
-  // --- Caja (proyección oblicua: frente, tapa y lateral) ---
-  const FX0 = 3, FX1 = 19, TOP0 = 20, TOP1 = 25, FB = 31, D = TOP1 - TOP0; // tapa de 6 filas, desplazada 1px por fila
-  for (let y = TOP0; y <= TOP1; y++) { const sh = TOP1 - y; for (let x = FX0 + sh; x <= FX1 + sh; x++) set(x, y, y === TOP0 ? 'Y' : 'W'); }
-  for (let y = TOP1 + 1; y <= FB; y++) for (let x = FX0; x <= FX1; x++) set(x, y, 'w');
-  for (let x = FX1 + 1; x <= FX1 + D; x++) { const k = x - FX1; for (let y = TOP1 + 1 - k; y <= FB - k + 1; y++) set(x, y, 'v'); }
-  // listón superior del frente y panel con cajón
-  for (let x = FX0; x <= FX1; x++) set(x, TOP1 + 1, 'o');
-  for (let x = FX0 + 2; x <= FX1 - 2; x++) { set(x, 28, 'v'); set(x, 30, 'v'); }
-  set(FX0 + 2, 29, 'v'); set(FX1 - 2, 29, 'v'); set(11, 29, 'G');
-  // zócalo
-  for (let x = FX0 - 1; x <= FX1 + 1; x++) { set(x, FB + 1, 'W'); set(x, FB + 2, 'v'); }
-  for (let x = FX1 + 2; x <= FX1 + D + 1; x++) { const k = x - FX1 - 1; set(x, FB + 1 - k, 'v'); set(x, FB + 2 - k, 'v'); }
+  // --- Caja ---
+  for (let x = 4; x <= 23; x++) { set(x, 32, 'W'); set(x, 33, 'w'); set(x, 34, 'v'); }           // zócalo
+  for (let y = 26; y <= 31; y++) for (let x = 6; x <= 21; x++) set(x, y, x >= 19 ? 'r' : 'R');    // cuerpo
+  for (let x = 6; x <= 21; x++) set(x, 31, 'r');
+  for (let x = 5; x <= 22; x++) { set(x, 24, 'o'); set(x, 25, 'W'); }                              // tapa
+  // emblema dorado
+  [[13,27],[12,28],[13,28],[14,28],[11,29],[12,29],[13,29],[14,29],[15,29],[12,30],[13,30],[14,30]].forEach(([x, y]) => set(x, y, 'G'));
+  set(13, 28, 'Y'); set(8, 28, 'r'); set(18, 28, 'r');
+  // plato
+  for (let x = 8; x <= 19; x++) set(x, 23, x === 8 || x === 19 ? 'q' : 'p');
+  for (let x = 10; x <= 17; x++) set(x, 22, 'q');
+  set(14, 22, 's');
   // manivela
-  set(FX1 + D + 1, 27, 's'); set(FX1 + D + 2, 27, 's'); set(FX1 + D + 3, 26, 'k'); set(FX1 + D + 3, 27, 'k'); set(FX1 + D + 3, 28, 'k');
-  // --- Plato ---
-  const PCX = 14.5, PCY = 22.8, PRX = 7, PRY = 2.4;
-  for (let y = TOP0; y <= TOP1; y++) for (let x = 0; x < w; x++) {
-    const d = ((x - PCX) / PRX) ** 2 + ((y - PCY) / PRY) ** 2;
-    if (d <= 1) set(x, y, d > 0.6 ? 'q' : 'p');
+  set(22, 28, 's'); set(23, 28, 's'); set(24, 28, 's'); set(25, 27, 'k'); set(25, 28, 'k'); set(25, 29, 'k');
+  // brazo con la caja de sonido
+  set(16, 21, 's'); set(17, 21, 's'); set(16, 20, 'S'); set(17, 20, 'S'); set(16, 19, 'S');
+  // --- Trompeta: curva bezier que se ensancha como una campana ---
+  const P0 = [16.5, 19], P1 = [9.5, 13], P2 = [19.5, 8.5];
+  const at = t => [(1 - t) ** 2 * P0[0] + 2 * (1 - t) * t * P1[0] + t * t * P2[0], (1 - t) ** 2 * P0[1] + 2 * (1 - t) * t * P1[1] + t * t * P2[1]];
+  for (let t = 0; t <= 1.0001; t += 0.01) {
+    const [cx, cy] = at(t), r = 0.9 + 5.0 * Math.pow(t, 3.2);
+    for (let y = Math.floor(cy - r); y <= Math.ceil(cy + r); y++) for (let x = Math.floor(cx - r); x <= Math.ceil(cx + r); x++) {
+      if ((x - cx) ** 2 + (y - cy) ** 2 > r * r) continue;
+      const rel = (y - cy) / Math.max(1, r);
+      set(x, y, rel < -0.45 ? 'Y' : rel < 0.15 ? 'G' : rel < 0.6 ? 'g' : 'd');
+    }
   }
-  set(14, 22, 's'); set(15, 22, 's');
-  // --- Trompeta ---
-  // cuello: sube desde el fondo de la tapa y se curva hacia la derecha
-  const neck = [[9,20],[9,19],[9,18],[9,17],[9,16],[9,15],[10,14],[10,13],[11,12]];
-  neck.forEach(([x, y]) => { set(x - 1, y, 'g'); set(x, y, 'G'); set(x + 1, y, 'Y'); });
-  // cono que se abre hacia la campana
-  const ell = (cx, cy, r, fn) => { for (let y = Math.floor(cy - r); y <= Math.ceil(cy + r); y++) for (let x = Math.floor(cx - r); x <= Math.ceil(cx + r); x++) if ((x - cx) ** 2 + (y - cy) ** 2 <= r * r) set(x, y, fn(x, y)); };
-  for (let t = 0; t <= 1.0001; t += 0.03) {
-    const cx = 11.5 + 7.2 * t, cy = 12 - 3.4 * t, r = 1.2 + 3.4 * t * t * t;
-    ell(cx, cy, r, (x, y) => (y < cy - r * 0.4 ? 'Y' : y > cy + r * 0.4 ? 'g' : 'G'));
-  }
-  // campana acampanada con pétalos y estrías
-  const bx = 20.2, by = 7.6, RU = 4.9, RV = 8.3;
-  for (let y = -3; y < h - 3; y++) for (let x = 0; x < w; x++) {
-    const dx = x - bx, dy = y - by, u = (dx - dy) * 0.7071, v = (dx + dy) * 0.7071;
-    const d = (u / RU) ** 2 + (v / RV) ** 2;
+  // boca de la campana: elipse perpendicular a la dirección final
+  const dx0 = P2[0] - P1[0], dy0 = P2[1] - P1[1], L = Math.hypot(dx0, dy0), nx = dx0 / L, ny = dy0 / L;
+  const mx = P2[0] + nx * 1.4, my = P2[1] + ny * 1.4, RA = 6.8, RB = 4.3;   // RA a lo largo del borde, RB profundidad
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const ddx = x - mx, ddy = y - my;
+    const a = ddx * -ny + ddy * nx, b = ddx * nx + ddy * ny;
+    const d = (a / RA) ** 2 + (b / RB) ** 2;
     if (d > 1) continue;
-    const ang = Math.atan2(u / RU, v / RV);
-    const petal = Math.cos(ang * 8);
-    // borde ondulado: los pétalos sobresalen un poco
-    if (d > 0.86 + 0.14 * petal) continue;
     let c;
-    const du = u + 0.9, dv = v + 0.6, dt = (du / RU) ** 2 + (dv / RV) ** 2; // garganta desplazada hacia el cuello
-    if (d > 0.62) c = petal > 0 ? 'Y' : 'G';
-    else if (dt < 0.1) c = 'j';
-    else if (dt < 0.28) c = 'i';
-    else c = Math.abs(Math.sin(ang * 4)) < 0.25 ? 'g' : 'd';
+    if (d > 0.55) c = (a < 0 ? 'Y' : 'G');
+    else { const d2 = ((a + 1) / (RA * 0.7)) ** 2 + ((b + 0.6) / (RB * 0.7)) ** 2; c = d2 < 0.35 ? 'j' : d2 < 0.8 ? 'i' : 'd'; }
     set(x, y, c);
   }
-  // brazo del fonocaptor
-  [[10,21],[11,21],[12,22],[13,22]].forEach(([x, y]) => set(x, y, 's'));
-  set(13, 23, 'k');
   // contorno
   const out = g.map(r => r.slice());
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
@@ -1071,7 +1064,7 @@ function buildGramophone() {
   }
   return out.map(r => r.join(''));
 }
-const GRAMO = buildGramophone().slice(0, 38);
+const GRAMO = buildGramophone();
 const DISC = [".kkkk.", "kkggkk", "kgRRgk", "kgRRgk", "kkggkk", ".kkkk."];
 const DISC_BIG = ["....kkkk....", "..kkkkkkkk..", ".kkwgkkggkk.", ".kgkkRRkkgk.", "kkgkRRRRkgkk", "kgkRRhhRRkgk",
   "kgkRRhhRRkgk", "kkgkRRRRkgkk", ".kgkkRRkkgk.", ".kkggkkggkk.", "..kkkkkkkk..", "....kkkk...."];
@@ -1080,8 +1073,8 @@ const NOTE = ["..##.", "..#.#", "..#..", "###..", "###.."];
 
 const QX = 352, QY = GROUND - QUIJOTE.length;
 const GX = 384, GY = GROUND - GRAMO.length;
-const SX = 418, SY = GROUND - SANCHO.length;
-const RX = 450, RY = GROUND - 44;
+const SX = 420, SY = GROUND - SANCHO.length;
+const RX = 452, RY = GROUND - 44;
 const VX = 830, VY = GROUND - 14;
 const MILL_X = 892;
 
@@ -1160,7 +1153,7 @@ const gm = {
   });
   const fig = document.createElement('figure');
   fig.className = 'memory';
-  fig.innerHTML = '<div class="orn">~ ❦ ~</div><img src="' + PHOTO_SRC + '" alt="Meli y Sebas frente a las murallas de un castillo medieval"><figcaption>Meli y Sebas medievales</figcaption>';
+  fig.innerHTML = '<div class="orn">~ ❦ ~</div><img src="' + PHOTO_SRC + '" alt="Meli y Sebas frente a las murallas de un castillo medieval"><figcaption>Meli y Sebas medievales, felices 5 meses amor</figcaption>';
   gm.lyrics.appendChild(fig);
 })();
 const fmt = s => isFinite(s) ? Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0') : '0:00';
@@ -1209,7 +1202,7 @@ const manchaScene = {
     for (let i = 0; i < 6; i++) setTimeout(() => addParticle('star', player.x + 4 + (i * 5) % 18, player.y + 6 + (i * 7) % 20), i * 120);
     setTimeout(() => say([
       { who: 'Melimon', text: '¿Dónde... estoy?' },
-      { who: 'Melimon', text: 'Esos molinos... ¿Estoy dentro del libro?' }
+      { who: 'Melimon', text: 'Esos molinos... ¿Estoy dentro del libro? Ojala tengan salchipapas por aquí' }
     ], () => { this.state = 'meet'; }), 1200);
   },
   talk() {
@@ -1228,8 +1221,8 @@ const manchaScene = {
     } else if (this.state === 'has') {
       say([{ who: 'Don Quijote', text: '¡Lo habéis hallado! Hacednos el honor, doncella: ponedlo vos misma.' }], () => {
         this.placeQ = 0; ui2.inv.classList.add('hidden');
-        const covers = player.x + 21 > GX + 4 && player.x + 2 < GX + 28;
-        if (covers) { this.state = 'stepping'; this.stepTo = GX + 28; }
+        const covers = player.x + 21 > GX + 5 && player.x + 2 < GX + 24;
+        if (covers) { this.state = 'stepping'; this.stepTo = GX + 27; }
         else { player.dir = player.x + 12 < GX + 15 ? 1 : -1; this.state = 'placing'; }
       });
     } else if (this.state === 'free') {
@@ -1256,6 +1249,7 @@ const manchaScene = {
       this.placeQ = Math.min(1, this.placeQ + 0.018 * k);
       if (this.placeQ >= 1) {
         this.state = 'playing';
+        sfx('needle');
         setTimeout(() => say([
           { who: 'Don Quijote', text: '¡Por mi señora Dulcinea! ¡El artilugio canta!' },
           { who: 'Sancho', text: 'Pues a mí me suena a gloria bendita.' }
@@ -1264,7 +1258,7 @@ const manchaScene = {
     }
     if (!song.paused) {
       this.notesT += k;
-      if (this.notesT > 40) { this.notesT = 0; addParticle('note', GX + 18 + Math.random() * 6, GY + 2); }
+      if (this.notesT > 40) { this.notesT = 0; addParticle('note', GX + 17 + Math.random() * 6, GY + 1); }
     }
     if (!dialog.active && !fading() && ['meet', 'search', 'has', 'free'].includes(this.state)) {
       const maxX = this.state === 'meet' ? QX - 20 : WORLD_W - 24;
@@ -1275,7 +1269,7 @@ const manchaScene = {
         return;
       }
       let label = null, act = null;
-      if (this.state === 'free' && cx > GX - 8 && cx < GX + 38) { label = 'Escuchar'; act = () => { this.state = 'menu'; gmOpenMenu(false); }; }
+      if (this.state === 'free' && cx > GX - 8 && cx < GX + 40) { label = 'Escuchar'; act = () => { this.state = 'menu'; gmOpenMenu(false); }; }
       else if (cx > QX - 18 && cx < RX + 20) { label = this.state === 'has' ? 'Poner disco' : 'Hablar'; act = () => this.talk(); }
       else if (this.state === 'search' && Math.abs(cx - (VX + 6)) < 18) {
         label = 'Recoger'; act = () => { this.state = 'item'; hidePrompt(); ui2.item.classList.remove('hidden'); sfx('pickup'); };
@@ -1337,14 +1331,13 @@ const manchaScene = {
     if (Math.floor(t / 90) % 3 === 0) rect(ctx, RX - cam + 51, RY + 32 + (Math.floor(t / 10) % 2), 2, 4, '#3a2418');
     rect(ctx, QX - cam + 7, GROUND - 1, 14, 2, 'rgba(60, 40, 20, 0.25)');
     grid(ctx, QUIJOTE, Q_PAL, QX - cam, QY + bobQ);
-    rect(ctx, GX - cam + 2, GROUND - 1, 24, 2, 'rgba(60, 40, 20, 0.25)');
+    rect(ctx, GX - cam + 5, GROUND - 1, 20, 2, 'rgba(60, 40, 20, 0.25)');
     grid(ctx, GRAMO, GR_PAL, GX - cam, GY);
     if (['playing', 'menu', 'free'].includes(this.state)) {
-      const pcx = GX - cam + 14.5, pcy = GY + 25.8;
-      for (let y = -2; y <= 2; y++) { const hw = Math.round(6.5 * Math.sqrt(Math.max(0, 1 - (y / 2.4) ** 2))); rect(ctx, Math.round(pcx - hw), Math.round(pcy + y), hw * 2, 1, '#1a1420'); }
-      rect(ctx, Math.round(pcx) - 2, Math.round(pcy), 4, 1, '#c4212f'); rect(ctx, Math.round(pcx) - 1, Math.round(pcy) - 1, 2, 1, '#c4212f');
-      rect(ctx, Math.round(pcx) - 1, Math.round(pcy), 1, 1, '#d0d6dc');
-      if (!song.paused) { const a2 = t / 9; rect(ctx, Math.round(pcx + Math.cos(a2) * 4.5), Math.round(pcy + Math.sin(a2) * 1.5), 1, 1, '#7a7a8a'); }
+      const px0 = GX - cam;
+      rect(ctx, px0 + 10, GY + 22, 8, 1, '#1a1420'); rect(ctx, px0 + 8, GY + 23, 12, 1, '#1a1420');
+      rect(ctx, px0 + 12, GY + 22, 4, 1, '#c4212f'); rect(ctx, px0 + 13, GY + 23, 2, 1, '#c4212f'); rect(ctx, px0 + 14, GY + 22, 1, 1, '#d0d6dc');
+      if (!song.paused) { const k2 = Math.floor(t / 6) % 10; rect(ctx, px0 + 9 + k2, GY + 23, 1, 1, '#7a7a8a'); }
     }
     rect(ctx, SX - cam + 7, GROUND - 1, 16, 2, 'rgba(60, 40, 20, 0.25)');
     grid(ctx, SANCHO, S_PAL, SX - cam, SY + bobS);
@@ -1361,7 +1354,7 @@ const manchaScene = {
 
     if (this.state === 'placing') {
       const q = this.placeQ, e = q < 0.5 ? 2 * q * q : 1 - Math.pow(-2 * q + 2, 2) / 2;
-      const x0 = player.x + 6, y0 = player.y + 12, x1 = GX + 11.5, y1 = GY + 22.8;
+      const x0 = player.x + 6, y0 = player.y + 12, x1 = GX + 11, y1 = GY + 18.5;
       const x = x0 + (x1 - x0) * e, y = y0 + (y1 - y0) * e - Math.sin(Math.PI * e) * 26;
       grid(ctx, q < 0.6 ? DISC_BIG : DISC, DISC_PAL, Math.round(x - cam), Math.round(y));
     }
@@ -1369,12 +1362,12 @@ const manchaScene = {
 
     if (dialog.active && dialog.lines[dialog.i].show === 'gramo') {
       rect(ctx, 0, 0, W, H, 'rgba(13, 10, 18, 0.45)');
-      const sc = 2, ox = Math.round(W / 2 - 32), oy = 62;
-      const glow = ctx.createRadialGradient(ox + 32, oy + 42, 4, ox + 32, oy + 42, 58);
+      const sc = 2, ox = Math.round(W / 2 - 30), oy = 62;
+      const glow = ctx.createRadialGradient(ox + 30, oy + 38, 4, ox + 30, oy + 38, 56);
       glow.addColorStop(0, 'rgba(255, 236, 170, 0.35)'); glow.addColorStop(1, 'rgba(255, 236, 170, 0)');
       ctx.fillStyle = glow; ctx.fillRect(ox - 30, oy - 30, 140, 140);
       GRAMO.forEach((row, y) => [...row].forEach((c, x) => { if (c !== '.' && GR_PAL[c]) rect(ctx, ox + x * sc, oy + y * sc, sc, sc, GR_PAL[c]); }));
-      sparkle(ox + 20, oy + 4, 3); sparkle(ox + 66, oy + 30, 4); sparkle(ox + 2, oy + 60, 5);
+      sparkle(ox + 24, oy + 2, 3); sparkle(ox + 60, oy + 30, 4); sparkle(ox + 4, oy + 56, 5);
     }
   }
 };
